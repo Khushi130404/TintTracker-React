@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./MainScreen.module.css";
-import Palette from "./Palette";
+import PaletteCollection from "./PaletteCollection";
 
 const MainScreen = () => {
   return (
@@ -11,14 +11,7 @@ const MainScreen = () => {
           Track your tints, monitor shades, and manage your palette
           effortlessly.
         </p>
-        <Palette
-          palette_id={1}
-          name="Khushi"
-          color1="#FF4500"
-          color2="#FF8C00"
-          color3="#FFD700"
-          color4="#8B0000"
-        />
+        <PaletteCollection></PaletteCollection>
       </div>
     </div>
   );
