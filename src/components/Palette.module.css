@@ -1,5 +1,5 @@
 .paletteContainer {
-  margin: 30px auto;
+  margin: 0px auto;
   max-width: 300px;
   text-align: center;
   border: 2px solid #ccc;
@@ -11,12 +11,13 @@
 
 .name {
   font-size: 1.5rem;
+  margin: 0;
   margin-bottom: 20px;
   color: #4b0082;
 }
 
 .colorBox {
-  height: 60px;
+  height: 35px;
   margin: 10px 0;
   border-radius: 8px;
   color: white;
