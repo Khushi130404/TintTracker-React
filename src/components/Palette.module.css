@@ -1,0 +1,29 @@
+.paletteContainer {
+  margin: 0px auto;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.name {
+  font-size: 20px;
+  width: 220px;
+  margin: 0;
+  margin-bottom: 20px;
+  color: #4b0082;
+}
+
+.colorBox {
+  height: 35px;
+  margin: 10px 0;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+}
