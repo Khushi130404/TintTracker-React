@@ -12,6 +12,7 @@ const MainScreen = () => {
           effortlessly.
         </p>
         <Palette
+          palette_id={1}
           name="Khushi"
           color1="#FF4500"
           color2="#FF8C00"

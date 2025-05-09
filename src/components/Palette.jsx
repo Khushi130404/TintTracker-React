@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Palette.module.css";
 
-const Palette = ({ name, color1, color2, color3, color4 }) => {
+const Palette = ({ palette_id,name, color1, color2, color3, color4 }) => {
   return (
     <div className={styles.paletteContainer}>
       <h2 className={styles.name}>{name}'s Palette</h2>
