@@ -25,7 +25,28 @@ const Palette = ({ palette_id, name, color1, color2, color3, color4 }) => {
   );
 
   return (
-    <div className={styles.paletteContainer}>
+    <div
+      className={styles.paletteContainer}
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(${parseInt(color1.slice(1, 3), 16)}, ${parseInt(
+          color1.slice(3, 5),
+          16
+        )}, ${parseInt(color1.slice(5, 7), 16)}, 0.15), 
+          rgba(${parseInt(color2.slice(1, 3), 16)}, ${parseInt(
+          color2.slice(3, 5),
+          16
+        )}, ${parseInt(color2.slice(5, 7), 16)}, 0.15), 
+          rgba(${parseInt(color3.slice(1, 3), 16)}, ${parseInt(
+          color3.slice(3, 5),
+          16
+        )}, ${parseInt(color3.slice(5, 7), 16)}, 0.15), 
+          rgba(${parseInt(color4.slice(1, 3), 16)}, ${parseInt(
+          color4.slice(3, 5),
+          16
+        )}, ${parseInt(color4.slice(5, 7), 16)}, 0.15))`,
+      }}
+    >
       <h2 className={styles.name}>{name}</h2>
       {renderColorBox(color1)}
       {renderColorBox(color2)}
