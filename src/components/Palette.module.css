@@ -26,4 +26,10 @@
   align-items: center;
   justify-content: center;
   font-family: monospace;
+  transition: transform 0.7s, background-color 0.7s;
+}
+
+.colorBox:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
 }
