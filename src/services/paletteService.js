@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/palette"; // Backend URL
+const API_BASE_URL = "http://localhost:3000/palette";
 
 export const insertPalette = async (paletteData) => {
   const response = await axios.post(`${API_BASE_URL}/insert`, paletteData);
