@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Palette.module.css";
 
-// Function to calculate the luma (brightness) of a color
 const calculateLuma = (color) => {
   const r = parseInt(color.slice(1, 3), 16);
   const g = parseInt(color.slice(3, 5), 16);
@@ -12,12 +11,10 @@ const calculateLuma = (color) => {
 
 const Palette = ({ palette_id, name, color1, color2, color3, color4 }) => {
   const [copiedColor, setCopiedColor] = useState(null);
-  const [showPopup, setShowPopup] = useState(false); // State for popup visibility
-
-  // Calculate lumas for each color and find the darkest
+  const [showPopup, setShowPopup] = useState(false);
   const colors = [color1, color2, color3, color4];
   const lumas = colors.map(calculateLuma);
-  const darkestColor = colors[lumas.indexOf(Math.min(...lumas))]; // Find the color with the minimum luma
+  const darkestColor = colors[lumas.indexOf(Math.min(...lumas))];
 
   const handleCopy = async (color) => {
     try {
@@ -33,18 +30,19 @@ const Palette = ({ palette_id, name, color1, color2, color3, color4 }) => {
     <div
       className={styles.colorBox}
       style={{ backgroundColor: color }}
-      onClick={() => handleCopy(color)}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleCopy(color);
+      }}
     >
       {copiedColor === color ? "Copied!" : color}
     </div>
   );
 
-  // Function to toggle the popup visibility
   const togglePopup = () => setShowPopup(!showPopup);
 
   return (
     <>
-      {/* Palette body */}
       <div
         className={styles.paletteContainer}
         style={{
@@ -66,7 +64,7 @@ const Palette = ({ palette_id, name, color1, color2, color3, color4 }) => {
             16
           )}, ${parseInt(color4.slice(5, 7), 16)}, 0.15))`,
         }}
-        onClick={togglePopup} // Toggle popup visibility on click
+        onClick={togglePopup}
       >
         <h2 className={styles.name} style={{ color: darkestColor }}>
           {name}
@@ -77,12 +75,11 @@ const Palette = ({ palette_id, name, color1, color2, color3, color4 }) => {
         {renderColorBox(color4)}
       </div>
 
-      {/* Popup */}
       {showPopup && (
         <div className={styles.popupOverlay} onClick={togglePopup}>
           <div
             className={styles.popupContent}
-            onClick={(e) => e.stopPropagation()} // Prevent click event from propagating to overlay
+            onClick={(e) => e.stopPropagation()}
           >
             <h2 className={styles.name} style={{ color: darkestColor }}>
               {name}
