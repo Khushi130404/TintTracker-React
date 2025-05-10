@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import styles from "./Palette.module.css";
 
+const calculateLuma = (color) => {
+  const r = parseInt(color.slice(1, 3), 16);
+  const g = parseInt(color.slice(3, 5), 16);
+  const b = parseInt(color.slice(5, 7), 16);
+
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
 const Palette = ({ palette_id, name, color1, color2, color3, color4 }) => {
   const [copiedColor, setCopiedColor] = useState(null);
+
+  const colors = [color1, color2, color3, color4];
+  const lumas = colors.map(calculateLuma);
+  const darkestColor = colors[lumas.indexOf(Math.min(...lumas))];
 
   const handleCopy = async (color) => {
     try {
@@ -47,7 +59,9 @@ const Palette = ({ palette_id, name, color1, color2, color3, color4 }) => {
         )}, ${parseInt(color4.slice(5, 7), 16)}, 0.15))`,
       }}
     >
-      <h2 className={styles.name}>{name}</h2>
+      <h2 className={styles.name} style={{ color: darkestColor }}>
+        {name}
+      </h2>
       {renderColorBox(color1)}
       {renderColorBox(color2)}
       {renderColorBox(color3)}
