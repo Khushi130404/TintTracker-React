@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Palette.module.css";
-import { deletePalette } from "../service/paletteService";
+import { deletePalette, updatePalette } from "../service/paletteService";
 
 const calculateLuma = (color) => {
   const r = parseInt(color.slice(1, 3), 16);
@@ -22,10 +22,18 @@ const Palette = ({
   const [copiedColor, setCopiedColor] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const colors = [color1, color2, color3, color4];
-  const lumas = colors.map(calculateLuma);
-  const darkestColor = colors[lumas.indexOf(Math.min(...lumas))];
+  const [editedName, setEditedName] = useState(name);
+  const [editedColors, setEditedColors] = useState([
+    color1,
+    color2,
+    color3,
+    color4,
+  ]);
+
+  const lumas = editedColors.map(calculateLuma);
+  const darkestColor = editedColors[lumas.indexOf(Math.min(...lumas))];
 
   const handleCopy = async (color) => {
     try {
@@ -37,20 +45,65 @@ const Palette = ({
     }
   };
 
-  const renderColorBox = (color) => (
+  const renderColorBox = (color, index, editable = false) => (
     <div
+      key={index}
       className={styles.colorBox}
       style={{ backgroundColor: color }}
       onClick={(e) => {
         e.stopPropagation();
-        handleCopy(color);
+        if (!editable) handleCopy(color);
       }}
     >
-      {copiedColor === color ? "Copied!" : color}
+      {editable ? (
+        <input
+          type="color"
+          value={color}
+          onChange={(e) => {
+            const newColors = [...editedColors];
+            newColors[index] = e.target.value;
+            setEditedColors(newColors);
+          }}
+        />
+      ) : copiedColor === color ? (
+        "Copied!"
+      ) : (
+        color
+      )}
     </div>
   );
 
-  const togglePopup = () => setShowPopup(!showPopup);
+  const handleUpdateSubmit = async () => {
+    const paletteData = {
+      name: editedName,
+      color1: editedColors[0],
+      color2: editedColors[1],
+      color3: editedColors[2],
+      color4: editedColors[3],
+    };
+
+    try {
+      await updatePalette(palette_id, paletteData);
+      onUpdate(palette_id, ...Object.values(paletteData));
+      setIsEditing(false);
+      setShowPopup(false);
+    } catch (error) {
+      console.error("Failed to update palette:", error);
+    }
+  };
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+    setIsEditing(false);
+    setEditedName(name);
+    setEditedColors([color1, color2, color3, color4]);
+  };
+
+  const rgbaFromHex = (hex) =>
+    `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(
+      hex.slice(3, 5),
+      16
+    )}, ${parseInt(hex.slice(5, 7), 16)}, 0.15)`;
 
   return (
     <>
@@ -58,29 +111,17 @@ const Palette = ({
         className={styles.paletteContainer}
         style={{
           background: `linear-gradient(135deg,
-            rgba(${parseInt(color1.slice(1, 3), 16)}, ${parseInt(
-            color1.slice(3, 5),
-            16
-          )}, ${parseInt(color1.slice(5, 7), 16)}, 0.15),
-            rgba(${parseInt(color2.slice(1, 3), 16)}, ${parseInt(
-            color2.slice(3, 5),
-            16
-          )}, ${parseInt(color2.slice(5, 7), 16)}, 0.15),
-            rgba(${parseInt(color3.slice(1, 3), 16)}, ${parseInt(
-            color3.slice(3, 5),
-            16
-          )}, ${parseInt(color3.slice(5, 7), 16)}, 0.15),
-            rgba(${parseInt(color4.slice(1, 3), 16)}, ${parseInt(
-            color4.slice(3, 5),
-            16
-          )}, ${parseInt(color4.slice(5, 7), 16)}, 0.15))`,
+            ${rgbaFromHex(editedColors[0])},
+            ${rgbaFromHex(editedColors[1])},
+            ${rgbaFromHex(editedColors[2])},
+            ${rgbaFromHex(editedColors[3])})`,
         }}
         onClick={togglePopup}
       >
         <h2 className={styles.name} style={{ color: darkestColor }}>
           {name}
         </h2>
-        {colors.map(renderColorBox)}
+        {editedColors.map((color, index) => renderColorBox(color, index))}
       </div>
 
       {showPopup && (
@@ -89,29 +130,56 @@ const Palette = ({
             className={styles.popupContent}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className={styles.name} style={{ color: darkestColor }}>
-              {name}
-            </h2>
-            {colors.map(renderColorBox)}
-
-            <div className={styles.buttonGroup}>
-              <button
-                className={styles.updateButton}
-                onClick={() => {
-                  togglePopup();
-                  onUpdate(palette_id);
-                }}
-              >
-                Update
-              </button>
-
-              <button
-                className={styles.deleteButton}
-                onClick={() => setShowConfirmDelete(true)}
-              >
-                Delete
-              </button>
-            </div>
+            {!isEditing ? (
+              <>
+                <h2 className={styles.name} style={{ color: darkestColor }}>
+                  {name}
+                </h2>
+                {editedColors.map((color, index) =>
+                  renderColorBox(color, index)
+                )}
+                <div className={styles.buttonGroup}>
+                  <button
+                    className={styles.updateButton}
+                    onClick={() => setIsEditing(true)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className={styles.deleteButton}
+                    onClick={() => setShowConfirmDelete(true)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  className={styles.nameInput}
+                />
+                {editedColors.map((color, index) =>
+                  renderColorBox(color, index, true)
+                )}
+                <div className={styles.buttonGroup}>
+                  <button
+                    className={styles.updateButton}
+                    onClick={handleUpdateSubmit}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className={styles.cancelButton}
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -142,7 +210,6 @@ const Palette = ({
               >
                 Yes, Delete
               </button>
-
               <button
                 className={styles.cancelButton}
                 onClick={() => setShowConfirmDelete(false)}
