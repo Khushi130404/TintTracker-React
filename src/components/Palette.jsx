@@ -84,16 +84,9 @@ const Palette = ({
 
     try {
       await updatePalette(palette_id, paletteData);
-      onUpdate(
-        palette_id,
-        paletteData.name,
-        paletteData.color1,
-        paletteData.color2,
-        paletteData.color3,
-        paletteData.color4
-      );
+      onUpdate(palette_id, ...Object.values(paletteData));
       setIsEditing(false);
-      setShowPopup(false);
+      togglePopup();
     } catch (error) {
       console.error("Failed to update palette:", error);
     }
@@ -106,28 +99,22 @@ const Palette = ({
     setEditedColors([color1, color2, color3, color4]);
   };
 
+  const rgbaFromHex = (hex) =>
+    `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(
+      hex.slice(3, 5),
+      16
+    )}, ${parseInt(hex.slice(5, 7), 16)}, 0.15)`;
+
   return (
     <>
       <div
         className={styles.paletteContainer}
         style={{
           background: `linear-gradient(135deg,
-            rgba(${parseInt(editedColors[0].slice(1, 3), 16)}, ${parseInt(
-            editedColors[0].slice(3, 5),
-            16
-          )}, ${parseInt(editedColors[0].slice(5, 7), 16)}, 0.15),
-            rgba(${parseInt(editedColors[1].slice(1, 3), 16)}, ${parseInt(
-            editedColors[1].slice(3, 5),
-            16
-          )}, ${parseInt(editedColors[1].slice(5, 7), 16)}, 0.15),
-            rgba(${parseInt(editedColors[2].slice(1, 3), 16)}, ${parseInt(
-            editedColors[2].slice(3, 5),
-            16
-          )}, ${parseInt(editedColors[2].slice(5, 7), 16)}, 0.15),
-            rgba(${parseInt(editedColors[3].slice(1, 3), 16)}, ${parseInt(
-            editedColors[3].slice(3, 5),
-            16
-          )}, ${parseInt(editedColors[3].slice(5, 7), 16)}, 0.15))`,
+            ${rgbaFromHex(editedColors[0])},
+            ${rgbaFromHex(editedColors[1])},
+            ${rgbaFromHex(editedColors[2])},
+            ${rgbaFromHex(editedColors[3])})`,
         }}
         onClick={togglePopup}
       >
