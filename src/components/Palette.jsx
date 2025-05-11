@@ -86,7 +86,7 @@ const Palette = ({
       await updatePalette(palette_id, paletteData);
       onUpdate(palette_id, ...Object.values(paletteData));
       setIsEditing(false);
-      togglePopup();
+      setShowPopup(false);
     } catch (error) {
       console.error("Failed to update palette:", error);
     }
