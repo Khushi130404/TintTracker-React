@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Palette.module.css";
-import { deletePalette } from "../service/paletteService";
+import { deletePalette, updatePalette } from "../service/paletteService";
 
 const calculateLuma = (color) => {
   const r = parseInt(color.slice(1, 3), 16);
@@ -73,10 +73,15 @@ const Palette = ({
     </div>
   );
 
-  const handleUpdateSubmit = () => {
-    onUpdate(palette_id, editedName, ...editedColors);
-    setIsEditing(false);
-    setShowPopup(false);
+  const handleUpdateSubmit = async () => {
+    try {
+      await updatePalette(palette_id, editedName, ...editedColors); // <-- This is the API call
+      onUpdate(palette_id, editedName, ...editedColors); // <-- Optional callback
+      setIsEditing(false);
+      setShowPopup(false);
+    } catch (error) {
+      console.error("Failed to update palette:", error);
+    }
   };
 
   const togglePopup = () => {
