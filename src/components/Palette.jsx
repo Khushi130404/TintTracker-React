@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Palette.module.css";
+import { deletePalette } from "../service/paletteService";
 
 const calculateLuma = (color) => {
   const r = parseInt(color.slice(1, 3), 16);
@@ -128,14 +129,20 @@ const Palette = ({
             <div className={styles.buttonGroup}>
               <button
                 className={styles.confirmButton}
-                onClick={() => {
-                  onDelete(palette_id);
-                  setShowConfirmDelete(false);
-                  setShowPopup(false);
+                onClick={async () => {
+                  try {
+                    await deletePalette(palette_id);
+                    onDelete(palette_id);
+                    setShowConfirmDelete(false);
+                    setShowPopup(false);
+                  } catch (error) {
+                    console.error("Failed to delete palette:", error);
+                  }
                 }}
               >
                 Yes, Delete
               </button>
+
               <button
                 className={styles.cancelButton}
                 onClick={() => setShowConfirmDelete(false)}
