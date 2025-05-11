@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Palette from "./Palette";
 import styles from "./PaletteCollection.module.css";
-import { getAllPalettes } from "../services/paletteService";
+import { getAllPalettes } from "../service/paletteService";
 
 const PaletteCollection = () => {
   const [palettes, setPalettes] = useState([]);

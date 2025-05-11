@@ -78,3 +78,56 @@
 .popupContent .colorBox:hover {
   opacity: 0.8;
 }
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.updateButton,
+.deleteButton,
+.confirmButton,
+.cancelButton {
+  padding: 8px 14px;
+  border: none;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.updateButton {
+  margin: 0 10px;
+  background-color: #4caf50;
+  color: white;
+}
+
+.deleteButton {
+  margin: 0 10px;
+  background-color: #f44336;
+  color: white;
+}
+
+.confirmButton {
+  margin-right: 5px;
+  background-color: #d32f2f;
+  color: white;
+}
+
+.cancelButton {
+  margin-left: 5px;
+  background-color: #757575;
+  color: white;
+}
+
+.confirmDeletePopup {
+  background-color: white;
+  padding: 20px;
+  color: #333;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 300px;
+  margin: auto;
+}
