@@ -74,9 +74,24 @@ const Palette = ({
   );
 
   const handleUpdateSubmit = async () => {
+    const paletteData = {
+      name: editedName,
+      color1: editedColors[0],
+      color2: editedColors[1],
+      color3: editedColors[2],
+      color4: editedColors[3],
+    };
+
     try {
-      await updatePalette(palette_id, editedName, ...editedColors); // <-- This is the API call
-      onUpdate(palette_id, editedName, ...editedColors); // <-- Optional callback
+      await updatePalette(palette_id, paletteData);
+      onUpdate(
+        palette_id,
+        paletteData.name,
+        paletteData.color1,
+        paletteData.color2,
+        paletteData.color3,
+        paletteData.color4
+      );
       setIsEditing(false);
       setShowPopup(false);
     } catch (error) {
