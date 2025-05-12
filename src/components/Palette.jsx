@@ -58,6 +58,7 @@ const Palette = ({
       {editable ? (
         <input
           type="color"
+          className={styles.colorInput}
           value={color}
           onChange={(e) => {
             const newColors = [...editedColors];
