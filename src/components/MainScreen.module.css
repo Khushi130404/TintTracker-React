@@ -38,11 +38,10 @@
 }
 
 .addButton {
-  background-color: #4b0082;
   color: white;
   border: none;
   float: right;
-  padding: 10px 20px;
+  height: 35px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
