@@ -11,6 +11,7 @@ const MainScreen = () => {
           Track your tints, monitor shades, and manage your palette
           effortlessly.
         </p>
+        <button className={styles.addButton}>Add Palette</button>
         <PaletteCollection></PaletteCollection>
       </div>
     </div>
