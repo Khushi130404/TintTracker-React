@@ -91,15 +91,20 @@
 }
 
 .colorInputs {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  width: 100%;
+  justify-content: center;
   margin: 15px 0;
+  gap: 10px;
 }
 
 .colorPicker {
-  width: 50px;
+  width: 400px;
   height: 40px;
   border: none;
+  outline: none;
+  border-radius: 360px;
+  background-color: transparent;
   cursor: pointer;
 }
 
