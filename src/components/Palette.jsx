@@ -35,6 +35,10 @@ const Palette = ({
   const lumas = editedColors.map(calculateLuma);
   const darkestColor = editedColors[lumas.indexOf(Math.min(...lumas))];
 
+  const sortedColorsByDarkness = [...editedColors].sort(
+    (a, b) => calculateLuma(b) - calculateLuma(a)
+  );
+
   const handleCopy = async (color) => {
     try {
       await navigator.clipboard.writeText(color);
@@ -122,7 +126,9 @@ const Palette = ({
         <h2 className={styles.name} style={{ color: darkestColor }}>
           {name}
         </h2>
-        {editedColors.map((color, index) => renderColorBox(color, index))}
+        {sortedColorsByDarkness.map((color, index) =>
+          renderColorBox(color, index)
+        )}
       </div>
 
       {showPopup && (
@@ -136,7 +142,7 @@ const Palette = ({
                 <h2 className={styles.name} style={{ color: darkestColor }}>
                   {name}
                 </h2>
-                {editedColors.map((color, index) =>
+                {sortedColorsByDarkness.map((color, index) =>
                   renderColorBox(color, index)
                 )}
                 <div className={styles.buttonGroup}>
