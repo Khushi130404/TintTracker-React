@@ -79,12 +79,16 @@ const Palette = ({
   );
 
   const handleUpdateSubmit = async () => {
+    const sorted = [...editedColors].sort(
+      (a, b) => calculateLuma(b) - calculateLuma(a)
+    );
+
     const paletteData = {
       name: editedName,
-      color1: editedColors[0],
-      color2: editedColors[1],
-      color3: editedColors[2],
-      color4: editedColors[3],
+      color1: sorted[0],
+      color2: sorted[1],
+      color3: sorted[2],
+      color4: sorted[3],
     };
 
     try {
@@ -92,6 +96,7 @@ const Palette = ({
       onUpdate(palette_id, ...Object.values(paletteData));
       setIsEditing(false);
       setShowPopup(false);
+      setEditedColors(sorted);
     } catch (error) {
       console.error("Failed to update palette:", error);
     }
